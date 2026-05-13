@@ -6,11 +6,13 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import Pages.GoogleSearch;
 import browserSetup.BrowserSetup;
+import utils.ReadExcel;
 import utils.ReadPropertiesfileExample;
 
 
@@ -18,6 +20,12 @@ public class GoogleTestAutomation {
 
 	WebDriver driver;
 	ReadPropertiesfileExample prop=new ReadPropertiesfileExample();
+	
+	@DataProvider(name="test1")
+	public Object[][] createDate1() throws IOException{
+		 ReadExcel read=new ReadExcel();
+		 return read.readExcelData(System.getProperty("user.dir")+"\\src\\test\\resources\\TestData.xlsx", "Sheet1");
+	}
 	
 	@Parameters({ "Browser" })
 	@BeforeMethod
@@ -28,11 +36,12 @@ public class GoogleTestAutomation {
 		driver=new BrowserSetup().setupBrowser(browser);
 		driver.get(prop.Read(System.getProperty("user.dir")+"\\src\\test\\resources\\config.properties","URL"));
 	}
-	@Test
-	public void testCase1() {
+	@Test(dataProvider = "test1")
+	public void testCase1(String keyword) {
 		Assert.assertEquals(driver.getTitle(), "Google");
 		 GoogleSearch enterkey=new GoogleSearch(driver);
-		 enterkey.setSearchBox("Ankit");
+		
+		 enterkey.setSearchBox(keyword);
 	}
 	
 	@AfterMethod
