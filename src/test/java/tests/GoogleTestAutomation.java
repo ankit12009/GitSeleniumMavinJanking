@@ -1,29 +1,36 @@
 package tests;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
+import java.io.IOException;
+
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-
 import Pages.GoogleSearch;
+import browserSetup.BrowserSetup;
+import utils.ReadPropertiesfileExample;
+
 
 public class GoogleTestAutomation {
 
 	WebDriver driver;
+	ReadPropertiesfileExample prop=new ReadPropertiesfileExample();
 	
+	@Parameters({ "Browser" })
 	@BeforeMethod
-	public void setUp() {
-		 driver=new ChromeDriver();
-		 driver.get("https://www.google.com");
+	public void setUp(@Optional("Edge") String browser) throws IOException {
+		
+//		prop=new ReadPropertiesfileExample();
+//		driver=new BrowserSetup() .setupBrowser(prop.Read(System.getProperty("user.dir")+"\\src\\test\\resources\\config.properties","Browser"));
+		driver=new BrowserSetup().setupBrowser(browser);
+		driver.get(prop.Read(System.getProperty("user.dir")+"\\src\\test\\resources\\config.properties","URL"));
 	}
 	@Test
 	public void testCase1() {
 		Assert.assertEquals(driver.getTitle(), "Google");
-		System.out.println(driver);
 		 GoogleSearch enterkey=new GoogleSearch(driver);
 		 enterkey.setSearchBox("Ankit");
 	}
