@@ -36,14 +36,12 @@
 
 <!--Adding TestNG Dependecny-->
 <!-- Source: https://mvnrepository.com/artifact/org.testng/testng -->
- <!--  <dependency>
+ <dependency>
     <groupId>org.testng</groupId>
     <artifactId>testng</artifactId>
     <version>7.12.0</version>
     <scope>test</scope>
 </dependency>
-
--->
   </dependencies>
   
 </project>
